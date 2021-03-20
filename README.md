@@ -5,6 +5,12 @@ Photo-Gallery app (like google drive but for only images)
 ![Architecture_Diagram](https://github.com/Ahmed-Araby/Photo-Gallery/blob/master/photo-gallery_Architecture_Diagram.png)
 
 
+## technologies used till now:
+* Node js
+* Express
+* Auth0 JWT for user authorization.
+
+
 ## To Do:
 * edit albums end points to use user_id | email, from the Auth Data for albums naming.
 * add images resource CRUD end points.
