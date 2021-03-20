@@ -1,0 +1,14 @@
+# build link for the universal login of you application.
+
+# get token "authorization" end point
+https://dev-m3mxp4c0.us.auth0.com/authorize?
+  audience=https://localhost:3000/api&
+  scope=openid%20profile%20email&
+  response_type=token&
+  client_id=d6HRf5DkUVql4gYSmZthtT6ZiLVa0Vgv&
+  redirect_uri=http://localhost:3001/authorized
+ 
+
+# user info end point
+https://dev-m3mxp4c0.us.auth0.com/userinfo
+then you have to send the authorizaiton bearer token.
