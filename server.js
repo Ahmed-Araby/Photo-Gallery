@@ -1,5 +1,6 @@
 const express = require('express');
 const jwtAuthz = require('express-jwt-authz'); // check for roles and scopes in payload of the JWT.
+const cors = require('cors');
 
 const {album_endPoints} = require('./album_endPoints');
 const {images_endPoints} = require('./image_endPoints');
@@ -12,6 +13,7 @@ const port = 3004;
 
 
 // middle ware for cors and parsing
+app.use(cors());
 app.use(express.json()); // for parsing request content with type "application/json".
 
 // middle ware for auth
