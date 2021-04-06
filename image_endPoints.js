@@ -14,6 +14,28 @@ const album_id = 'album_1';
 
 Router.get('/', function(req, res){
     // download the image
+    const album_id = req.body.albumId;
+    const img_id = req.body.imgId;
+    const imgPath =path.join(storgePath, user_id , album_id , img_id);
+    
+    // this funcetion wll set the header aith attachment
+    // to tell the browser to prompt the user to download the file.
+
+    res.download(imgPath, function(err){
+        if(err){
+            console.log("error during sending image back to the user:\n", err)
+            if(err.errno == -2)
+                res.status(404).json({
+                    success:false,
+                    error:`image :'${img_id}' or album :'${album_id}' is not exist`
+                });
+            else
+                res.status(500).json({
+                    success:false,
+                    error:`internal Server Error`
+                });
+        }
+    });
 })
 
 Router.post('/', upload.single('newImg'), function(req, res){
@@ -40,6 +62,5 @@ Router.put('/', function(req, res){
 Router.delete('/', function(req, res){
     // delete image
 })
-
 
 module.exports = {images_endPoints:Router};
