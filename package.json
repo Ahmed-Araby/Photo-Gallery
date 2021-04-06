@@ -4,18 +4,31 @@
   "description": "bring the file system experience online",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "author": "Ahmed Araby",
   "license": "ISC",
   "dependencies": {
+    "cookie-parser": "^1.4.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-jwt": "^6.0.0",
     "express-jwt-authz": "^2.4.1",
     "express-session": "^1.17.1",
     "jwks-rsa": "^2.0.1",
+    "multer": "^1.4.2",
     "passport": "^0.4.1",
     "passport-auth0": "^1.4.0"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ahmed-Araby/Photo-Gallery.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/Ahmed-Araby/Photo-Gallery/issues"
+  },
+  "homepage": "https://github.com/Ahmed-Araby/Photo-Gallery#readme"
 }
