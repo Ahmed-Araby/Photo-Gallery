@@ -25,11 +25,12 @@ app.use('/album', jwtAuthz(["write:albums"], {customScopeKey:"permissions"}),
 
 app.use('/image', images_endPoints);
 
+/*
 // error handling have to be the last.
 app.use(function(err, req, res, next){
     console.log("error is ", err.message);
     res.json({error:err.message});
-})
+})*/
 
 app.listen(port, (err)=>{
     if(err)
