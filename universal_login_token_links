@@ -1,8 +1,13 @@
 # build link for the universal login of you application.
 
+
+# notes:
+clients do not need audience query
+
 # get token "authorization" end point
 https://dev-m3mxp4c0.us.auth0.com/authorize?
-  audience=https://localhost:3000/api&
+  audience=https://localhost:3000/api&    
+  grant_type=authorization_code&
   scope=openid%20profile%20email&
   response_type=token&
   client_id=d6HRf5DkUVql4gYSmZthtT6ZiLVa0Vgv&
@@ -12,3 +17,27 @@ https://dev-m3mxp4c0.us.auth0.com/authorize?
 # user info end point
 https://dev-m3mxp4c0.us.auth0.com/userinfo
 then you have to send the authorizaiton bearer token.
+
+
+
+
+
+
+# this is implict authorization flow
+https://dev-m3mxp4c0.us.auth0.com/authorize?
+  audience=https://localhost:3000/api&    
+  scope=openid%20profile%20email&
+  response_type=token&
+  client_id=d6HRf5DkUVql4gYSmZthtT6ZiLVa0Vgv&
+  redirect_uri=http://localhost:3001/authorized
+
+
+
+
+https://dev-m3mxp4c0.us.auth0.com/authorize?
+    response_type=id_token&
+    response_mode=form_post&
+    client_id=d6HRf5DkUVql4gYSmZthtT6ZiLVa0Vgv&
+    redirect_uri=http://localhost:3001/authorized&
+    scope=profile&
+    audience=https://localhost:3000/api
