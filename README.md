@@ -8,14 +8,12 @@ Photo-Gallery app (google drive like, but only for images)
 ## technologies used till now:
 * Node js
 * Express
-* Auth0 JWT for user authorization.
+* JWT for user authentication and authorization.
 
 
 ## To Do:
-* edit albums end points to use user_id | email, from the Auth Data for albums naming.
-* add images resource CRUD end points.
-* build the front end.
-* change the storge method to be mongo Blob to store images [for practice purpose].
-* put the application in docker container.
-* deploy the App in aws for 1 day.
-* change the storge method to be S3 Bucket.
+[ ] put the application in docker container.
+[ ] build the front end.
+[ ] use Object Storgae Data Base.
+[ ] deploy the App in aws for 1 day.
+[ ] change the storge method to be S3 Bucket.
