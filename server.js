@@ -26,8 +26,10 @@ app.use('/', user_endPoints);
 
 // error handling have to be the last.
 app.use(function(err, req, res, next){
-    console.log("error is ", err.message);
-    res.json({error:err.message});
+    res.json({
+        error:err.message,
+        from:"error handler middleWare",
+    });
 })
 
 app.use(function(req, res){

@@ -9,9 +9,6 @@ const storgePath = __dirname + '/../storage';
 const authorize_middleWare = require('../middle_wares/authorize_middleWare').authorize_middleWare;
 
 // tmp data, until supporting auth data.
-const user_id  = 'id_1';
-const album_id = 'album_1';
-
 
 Router.get('/fetch', function(req, res){
     /** 
@@ -20,7 +17,7 @@ Router.get('/fetch', function(req, res){
      */
 
     // return the image as binary data for the JS script.
-    console.log("body is ", req.query);
+    const user_id  = req.user.id;
     const album_id = req.query.albumId;
     const img_id   = req.query.imgId;
     const imgPath  = path.join(storgePath, user_id , album_id , img_id);
@@ -45,10 +42,11 @@ Router.get('/fetch', function(req, res){
 
 Router.get('/', authorize_middleWare(["read:image"]), function(req, res){
     // download the image
+    const user_id = req.user.id;
     const album_id = req.body.albumId;
     const img_id   = req.body.imgId;
     const imgPath  = path.join(storgePath, user_id , album_id , img_id);
-    
+        
     // this funcetion wll set the header aith attachment
     // to tell the browser to prompt the user to download the file.
 
@@ -71,25 +69,30 @@ Router.get('/', authorize_middleWare(["read:image"]), function(req, res){
 
 Router.post('/', authorize_middleWare(['write:image']), 
                 upload.single('newImg'),
-function(req, res){
-    // save the image 
-    const imgPath =path.join(storgePath, user_id , album_id , req.file.originalname); 
-    try{
-        fs.writeFileSync(imgPath, req.file.buffer);
-        res.status(201).json({
-            success:true, 
-            imgpath: path.join(user_id , album_id , req.file.originalname)
-        });
-    }
-    catch (err){
-        res.status(500).json({
-            success:false, 
-        })
-    }
-})
+        function(req, res){
+            // save the image 
+            const user_id = req.user.id;
+            const album_id = req.body.albumId;
+            const imgPath =path.join(storgePath, user_id , album_id , req.file.originalname); 
+            
+            try{
+                fs.writeFileSync(imgPath, req.file.buffer);
+                res.status(201).json({
+                    success:true, 
+                    imgpath: path.join(user_id , album_id , req.file.originalname)
+                });
+            }
+            catch (err){
+                res.status(500).json({
+                    success:false, 
+                })
+            }
+        }
+)
 
 Router.put('/', async function(req, res){
     // rename the image
+    const user_id = req.user.id;
     const album_id = req.body.albumId;
     const old_img_id = req.body.imgId;
     const new_img_id = req.body.newImgId;
@@ -124,11 +127,11 @@ Router.put('/', async function(req, res){
 
 Router.delete('/', function(req, res){
     // delete image
-    
+    const user_id = req.user.id;
     const album_id = req.body.albumId;
     const img_id   = req.body.imgId;
     const imgPath  = path.join(storgePath, user_id , album_id , img_id);
- 
+    
     fs.unlink(imgPath, function(err){
         if(err){
             console.log("error during deleting image : ", err);
