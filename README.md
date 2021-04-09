@@ -1,5 +1,5 @@
 # Photo-Gallery
-Photo-Gallery app (google drive like, but only for images)
+Photo-Gallery app (Like google drive, but only for images)
 
 ## Architecture Diagram (Simple):
 ![Architecture_Diagram](https://github.com/Ahmed-Araby/Photo-Gallery/blob/master/dump/photo-gallery_Architecture_Diagram.png)
