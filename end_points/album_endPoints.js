@@ -5,7 +5,6 @@ const Router = express.Router();
 
 // globals over the file.
 const storagePath = path.join(__dirname, "/../storage");
-const userId = "id_1"; // must come from the client.
 
 
 Router.post('/', (req, res)=>{
@@ -17,6 +16,7 @@ Router.post('/', (req, res)=>{
         return ;
     }
 
+    const userId = req.user.id;
     let new_album_name  = req.body.new_album_name;
     let new_album_path = path.join(storagePath, userId, new_album_name);
     if(fs.existsSync(new_album_path)){
@@ -55,11 +55,11 @@ Router.post('/', (req, res)=>{
  * in the front end  to request images inside this album.
 */
 Router.get('/:pageNum', (req, res)=>{
-    let pageNum = req.params.pageNum;
-    // print
-    console.log("request --- ", pageNum);
     
+    const userId = req.user.id;
+    let pageNum = req.params.pageNum;
     let dirPath = path.join(storagePath, userId);
+    
     fs.readdir(dirPath, function(err, contentList){
         // do pagination here.
         if(err)
@@ -89,7 +89,7 @@ Router.patch("/", function(req, res){
         });
         return ;
     }
-    
+    const userId = req.user.id;
     let old_album_name = req.body.old_album_name;
     let new_album_name = req.body.new_album_name;
     let oldPath = path.join(storagePath, userId, old_album_name);
@@ -123,6 +123,8 @@ Router.delete('/:albumName', function(req, res){
     /**
      * albumName will always be exist other
      *  wise end point will not match */
+    
+    const userId = req.user.id;
     let albumName = req.params.albumName; 
     let album_path = path.join(storagePath, userId, albumName);
     fs.rmdir(album_path, function(err){
