@@ -5,7 +5,7 @@ const path = require('path');
 
 const Router = express.Router();
 const upload = multer();
-const storgePath = __dirname + '/storage';
+const storgePath = __dirname + '/../storage';
 
 
 // tmp data, until supporting auth data.

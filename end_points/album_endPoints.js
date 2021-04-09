@@ -4,7 +4,7 @@ const path = require('path');
 const Router = express.Router();
 
 // globals over the file.
-const storagePath = path.join(__dirname, "storage");
+const storagePath = path.join(__dirname, "/../storage");
 const userId = "id_1"; // must come from the client.
 
 
