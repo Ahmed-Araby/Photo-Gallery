@@ -2,9 +2,11 @@ const express = require('express');
 const jwtAuthz = require('express-jwt-authz'); // check for roles and scopes in payload of the JWT.
 const cors = require('cors');
 
-const {album_endPoints} = require('./album_endPoints');
-const {images_endPoints} = require('./image_endPoints');
-const {auth_middleware} = require('./auth_middleware');
+const {album_endPoints}  = require('./end_points/album_endPoints');
+const {images_endPoints} = require('./end_points/image_endPoints');
+const {user_endPoints}   = require('./end_points/user_endPoints');
+
+const {auth_middleWare} = require('./middle_wares/auth_middleWare');
 
 // initializations
 const app = express();
@@ -12,25 +14,29 @@ const port = 3004;
 
 
 
-// middle ware for cors and parsing
 app.use(cors());
-app.use(express.json()); // for parsing request content with type "application/json".
+app.use(express.json()); //"application/json".
+app.use(express.urlencoded()); // x-www-form-urlencoded [sign up/in forms]
 
-// middle ware for auth
-//app.use(auth_middleware);
+app.use('/album', auth_middleWare, album_endPoints);
 
-// my endPoints as Middlewares
-app.use('/album', jwtAuthz(["write:albums"], {customScopeKey:"permissions"}),
-                  album_endPoints);
+app.use('/image', auth_middleWare, images_endPoints);
 
-app.use('/image', images_endPoints);
+app.use('/', user_endPoints);
 
-/*
 // error handling have to be the last.
 app.use(function(err, req, res, next){
-    console.log("error is ", err.message);
-    res.json({error:err.message});
-})*/
+    res.json({
+        error:err.message,
+        from:"error handler middleWare",
+    });
+})
+
+app.use(function(req, res){
+    res.status(404).json({
+        error:"not Found"
+    })
+})
 
 app.listen(port, (err)=>{
     if(err)
