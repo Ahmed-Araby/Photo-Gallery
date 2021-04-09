@@ -41,7 +41,7 @@ Router.post('/signin', function(req, res){
 
                  // for authorization
                  roles:["read:image", "read:album", "write:image", "write:album"],
-                 exp:Date.now() / 1000 + 5 * 60
+                 exp:Date.now() / 1000 + 60 * 60
                 };
     // give the user JWT token.
     let jwt_token = generateJwtToken(user); // only valid for 1 minute.

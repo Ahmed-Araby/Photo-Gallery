@@ -4,9 +4,8 @@
  */
 
 const JWT = require('jsonwebtoken');
-const Router = require('express').Router();
 
-Router.use(function(req, res, next){
+function auth_middleWare(req, res, next){
     const auth_header = req.header('Authorization');
     if(!auth_header){
         res.status(301).send({
@@ -32,12 +31,12 @@ Router.use(function(req, res, next){
     catch(err){
         console.log("auth error : ", err);
         res.status(301).send({
-            error:"Invalid token"
+            error:err.message
         })
         return ;
     }
 
     next();
-})
+}
 
-module.exports = {auth_middleWare:Router};
+module.exports = {auth_middleWare};

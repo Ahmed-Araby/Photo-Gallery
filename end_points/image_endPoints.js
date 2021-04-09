@@ -6,7 +6,7 @@ const path = require('path');
 const Router = express.Router();
 const upload = multer();
 const storgePath = __dirname + '/../storage';
-
+const authorize_middleWare = require('../middle_wares/authorize_middleWare').authorize_middleWare;
 
 // tmp data, until supporting auth data.
 const user_id  = 'id_1';
@@ -43,7 +43,7 @@ Router.get('/fetch', function(req, res){
 
 })
 
-Router.get('/', function(req, res){
+Router.get('/', authorize_middleWare(["read:image"]), function(req, res){
     // download the image
     const album_id = req.body.albumId;
     const img_id   = req.body.imgId;
@@ -69,7 +69,9 @@ Router.get('/', function(req, res){
     });
 })
 
-Router.post('/', upload.single('newImg'), function(req, res){
+Router.post('/', authorize_middleWare(['write:image']), 
+                upload.single('newImg'),
+function(req, res){
     // save the image 
     const imgPath =path.join(storgePath, user_id , album_id , req.file.originalname); 
     try{
