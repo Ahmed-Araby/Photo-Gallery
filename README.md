@@ -12,8 +12,8 @@ Photo-Gallery app (google drive like, but only for images)
 
 
 ## To Do:
-[ ] put the application in docker container.
-[ ] build the front end.
-[ ] use Object Storgae Data Base.
-[ ] deploy the App in aws for 1 day.
-[ ] change the storge method to be S3 Bucket.
+- [ ] put the application in docker container.
+- [ ] build the front end.
+- [ ] use Object Storgae Data Base.
+- [ ] deploy the App in aws for 1 day.
+- [ ] change the storge method to be S3 Bucket.
