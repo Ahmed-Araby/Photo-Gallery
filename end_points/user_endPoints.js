@@ -33,6 +33,8 @@ Router.post('/signin', function(req, res){
      * here should be the Data retrival and 
      * checking of the user data against the DB
      */
+    let name ="Ahmed Araby";
+    let id="id_1";
     let user = { id:"id_1",
                  name:"ahmed_araby",
                  email:"ahmedaraby605@gmail.com", 
@@ -47,7 +49,10 @@ Router.post('/signin', function(req, res){
     let jwt_token = generateJwtToken(user); // only valid for 1 minute.
     res.cookie('bearer_token', jwt_token);
     res.json({
-        success:true, 
+        success:true,
+        name:name, 
+        email:email,
+        id:id,
         jwt_token:jwt_token
     });
     console.log("jwt is :", jwt_token);

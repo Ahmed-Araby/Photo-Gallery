@@ -1,0 +1,13 @@
+# FileSystem in node (fs)
+- existsSync
+- mkdir
+- readdir
+
+
+# express response stream
+- sendFile will send file as content to be embeded in the 
+html page so browser will not prompt the user for download.
+
+- download file use sendfile and will set some headers that will
+tell the browser to prompot the user for download.
+

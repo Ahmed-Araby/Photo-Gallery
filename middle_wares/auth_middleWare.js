@@ -1,6 +1,5 @@
 /**
  * this file will verify the authentication of the user
- * and it will check for the authorization of the user also.
  */
 
 const JWT = require('jsonwebtoken');
@@ -23,13 +22,14 @@ function auth_middleWare(req, res, next){
         return ;
     }
 
-    // verigy the token sign
+    // verify the token sign
     try{
+        // will return the user payload if verifyed, throw error not verifyed.
         let user_payload  = JWT.verify(auth_data[1], process.env.JWT_SIGN_SECRET);
         req.user = user_payload;
     }
     catch(err){
-        console.log("auth error : ", err);
+        console.log("auth error : ", err); // expired | invalid token
         res.status(301).send({
             error:err.message
         })

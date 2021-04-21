@@ -2,23 +2,27 @@ const express = require('express');
 const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
-
-const Router = express.Router();
-const upload = multer();
-const storgePath = __dirname + '/../storage';
 const authorize_middleWare = require('../middle_wares/authorize_middleWare').authorize_middleWare;
 
-// tmp data, until supporting auth data.
+const Router = express.Router();
+const upload = multer();  // for parsing images in forms.
+const storgePath = __dirname + '/../storage';
+
+
+/**
+ * this end point will act as a static file server
+ * I will use it in the <img> html tag as src for the images.
+ * 
+ * regards security I will get the user_id from the JWT hence, any path in the url
+ * will retrive data from the user directory only.
+ */
 
 Router.get('/:albumId/:imgId',
  authorize_middleWare(['read:image']), 
     function(req, res){
-        console.log("here ")
-        // security check
         const imgPath = path.join(storgePath, req.user.id, req.params.albumId, req.params.imgId);
-        console.log("path : ", imgPath);
         res.sendFile(imgPath, function(err){
-            // if this function failed would express send the headers for this res.sendFile !!!!!????
+            // if this function failed would express send the headers for res.sendFile !!!!!????
             if(err){
                 console.log("imgSrc error : ", err);
                 res.status(404).end();
@@ -31,6 +35,9 @@ Router.get('/:albumId/:imgId',
     }
 )
 
+/**
+ * this endpoint will allow the browser to put the image into blob
+ */
 Router.get('/fetch', function(req, res){
     /** 
      * if we want to allow the front end to load images as urls 
@@ -61,6 +68,10 @@ Router.get('/fetch', function(req, res){
 
 })
 
+
+/**
+ * this end point will tell the browser to prompt the user to download the image
+ */
 Router.get('/', authorize_middleWare(["read:image"]), function(req, res){
     // download the image
     const user_id = req.user.id;
@@ -89,7 +100,7 @@ Router.get('/', authorize_middleWare(["read:image"]), function(req, res){
 })
 
 Router.post('/', authorize_middleWare(['write:image']), 
-                upload.single('newImg'),
+                upload.single('newImg'), // this middle ware  will populate file property with the image binary data
         function(req, res){
             // save the image 
             const user_id = req.user.id;

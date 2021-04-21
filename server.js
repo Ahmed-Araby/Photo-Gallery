@@ -1,3 +1,7 @@
+// have to be in the very first.
+const dotenv = require('dotenv');
+dotenv.config();
+
 const express = require('express');
 const jwtAuthz = require('express-jwt-authz'); // check for roles and scopes in payload of the JWT.
 const cors = require('cors');
@@ -7,6 +11,7 @@ const {images_endPoints} = require('./end_points/image_endPoints');
 const {user_endPoints}   = require('./end_points/user_endPoints');
 
 const {auth_middleWare} = require('./middle_wares/auth_middleWare');
+
 
 // initializations
 const app = express();
@@ -32,6 +37,7 @@ app.use(function(err, req, res, next){
     });
 })
 
+/** handle 404 not found */
 app.use(function(req, res){
     res.status(404).json({
         error:"not Found"

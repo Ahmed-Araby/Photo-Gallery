@@ -5,8 +5,16 @@ const Router = express.Router();
 
 // globals over the file.
 const storagePath = path.join(__dirname, "/../storage");
+const ALBUM_PER_PAGE = parseInt(process.env.ALBUM_PER_PAGE, 10);
 
-
+/**
+ * - this end point will revcieve json data
+ *   in the body.
+ * 
+ * - create album 
+ * 
+ * - respond with success or failure
+ */
 Router.post('/', (req, res)=>{
     if(!req.body.new_album_name){
         res.status(400).json({
@@ -51,11 +59,9 @@ Router.post('/', (req, res)=>{
 
 /** 
  * return albums for the user paginated 
- * the point is to return album name and then the user can click on the album
- * in the front end  to request images inside this album.
 */
 Router.get('/:pageNum', (req, res)=>{
-    
+
     const userId = req.user.id;
     let pageNum = req.params.pageNum;
     let dirPath = path.join(storagePath, userId);
@@ -68,11 +74,15 @@ Router.get('/:pageNum', (req, res)=>{
                 error:"user do not have albums"
             });
         
-        else
+        else{
+            let subContentList =
+             contentList.slice(pageNum * ALBUM_PER_PAGE,
+                 pageNum * ALBUM_PER_PAGE + ALBUM_PER_PAGE);
             res.json({
                 success:"true", 
-                albums:contentList
+                albums:subContentList
             });
+        }
     }); 
 });
 
@@ -95,7 +105,8 @@ Router.patch("/", function(req, res){
     let oldPath = path.join(storagePath, userId, old_album_name);
     let newPath = path.join(storagePath, userId, new_album_name);
 
-    // validate the new_album_name as to check if it follow the fileSystem naming rules.
+    // validate the new_album_name, 
+    //to check if it follow the fileSystem naming rules.
 
     fs.rename(oldPath, newPath, function(err){
         if(err){
@@ -120,9 +131,6 @@ Router.patch("/", function(req, res){
 });
 
 Router.delete('/:albumName', function(req, res){
-    /**
-     * albumName will always be exist other
-     *  wise end point will not match */
     
     const userId = req.user.id;
     let albumName = req.params.albumName; 

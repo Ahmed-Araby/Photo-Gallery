@@ -2,7 +2,7 @@
 function authorize_middleWare(required_roles){
     return function(req, res, next){
         // access roles throw closure.
-        const user_roles = req.user.roles;
+        const user_roles = req.user.roles; // roled assigned by me, the server mainter
         
         for(let role of required_roles){
             if(!user_roles.includes(role)){
