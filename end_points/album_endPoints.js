@@ -15,7 +15,12 @@ const ALBUM_PER_PAGE = parseInt(process.env.ALBUM_PER_PAGE, 10);
  * 
  * - respond with success or failure
  */
+
+
 Router.post('/', (req, res)=>{
+
+    console.log("create album endPoint ");
+
     if(!req.body.new_album_name){
         res.status(400).json({
             success:false, 
@@ -60,10 +65,25 @@ Router.post('/', (req, res)=>{
 /** 
  * return albums for the user paginated 
 */
-Router.get('/:pageNum', (req, res)=>{
+Router.get('/:pageNum/:albumsPerPage', (req, res)=>{
+
+    console.log("return albums end point ")
 
     const userId = req.user.id;
-    let pageNum = req.params.pageNum;
+    let pageNum=0;
+    let albumsPerPage = 0;    
+    pageNum = parseInt(req.params.pageNum, 10);
+    albumsPerPage = parseInt(req.params.albumsPerPage, 10);
+    
+    if(!pageNum  || !albumsPerPage ){
+        console.log("malformed url parameters")
+        res.status(401).json({
+            success:false, 
+            error:"url parameters are mulformed"
+        })
+        return ;
+    }
+
     let dirPath = path.join(storagePath, userId);
     
     fs.readdir(dirPath, function(err, contentList){
@@ -75,9 +95,16 @@ Router.get('/:pageNum', (req, res)=>{
             });
         
         else{
-            let subContentList =
-             contentList.slice(pageNum * ALBUM_PER_PAGE,
-                 pageNum * ALBUM_PER_PAGE + ALBUM_PER_PAGE);
+            
+            let subContentList = contentList.slice(pageNum * albumsPerPage,
+                                pageNum * albumsPerPage + albumsPerPage);
+            subContentList = subContentList.map((name, index)=>{
+                return {
+                    name:name,
+                    description:"* my family photos", 
+                    id:pageNum*albumsPerPage + index
+                }
+            });
             res.json({
                 success:"true", 
                 albums:subContentList

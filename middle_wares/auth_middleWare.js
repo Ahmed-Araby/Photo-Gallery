@@ -6,6 +6,8 @@ const JWT = require('jsonwebtoken');
 
 function auth_middleWare(req, res, next){
     const auth_header = req.header('Authorization');
+    console.log("auth data : ", auth_header);
+
     if(!auth_header){
         res.status(301).send({
             error:"user is not authenticated"
@@ -27,6 +29,7 @@ function auth_middleWare(req, res, next){
         // will return the user payload if verifyed, throw error not verifyed.
         let user_payload  = JWT.verify(auth_data[1], process.env.JWT_SIGN_SECRET);
         req.user = user_payload;
+        
     }
     catch(err){
         console.log("auth error : ", err); // expired | invalid token

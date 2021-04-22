@@ -27,8 +27,7 @@ Router.post('/signup', function(req, res){
 Router.post('/signin', function(req, res){
     let email = req.body.email;
     let password = req.body.password;
-    console.log("user is : ", email, password);
-
+ 
     /**
      * here should be the Data retrival and 
      * checking of the user data against the DB
@@ -55,7 +54,6 @@ Router.post('/signin', function(req, res){
         id:id,
         jwt_token:jwt_token
     });
-    console.log("jwt is :", jwt_token);
-})
+ })
 
 module.exports = {user_endPoints:Router};
