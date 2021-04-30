@@ -6,7 +6,8 @@ const JWT = require('jsonwebtoken');
 
 function auth_middleWare(req, res, next){
     const auth_header = req.header('Authorization');
-    console.log("auth data : ", auth_header);
+    //console.log("auth data : ", auth_header);
+    console.log("in auth middle ware ");
 
     if(!auth_header){
         res.status(301).send({

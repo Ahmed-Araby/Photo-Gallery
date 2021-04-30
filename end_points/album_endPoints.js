@@ -69,23 +69,25 @@ Router.get('/:pageNum/:albumsPerPage', (req, res)=>{
 
     console.log("return albums end point ")
 
+    // extract data from the request
     const userId = req.user.id;
     let pageNum=0;
     let albumsPerPage = 0;    
     pageNum = parseInt(req.params.pageNum, 10);
     albumsPerPage = parseInt(req.params.albumsPerPage, 10);
     
-    if(!pageNum  || !albumsPerPage ){
+    // validate the data 
+    /*if(!pageNum  || !albumsPerPage ){
         console.log("malformed url parameters")
         res.status(401).json({
             success:false, 
             error:"url parameters are mulformed"
         })
         return ;
-    }
+    }*/
 
+    // get albums
     let dirPath = path.join(storagePath, userId);
-    
     fs.readdir(dirPath, function(err, contentList){
         // do pagination here.
         if(err)
@@ -111,6 +113,7 @@ Router.get('/:pageNum/:albumsPerPage', (req, res)=>{
             });
         }
     }); 
+    
 });
 
 

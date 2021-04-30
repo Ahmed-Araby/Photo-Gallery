@@ -22,7 +22,15 @@ const port = 3004;
 app.use(cors());
 app.use(express.json()); //"application/json".
 app.use(express.urlencoded()); // x-www-form-urlencoded [sign up/in forms]
+app.use((req, res, next)=>{
+    const env = process.env.NODE_ENV || "dev";
+    if(env == "dev")
+        res.setHeader('Cache-Control', 'no-store');
+    next();
+    
+})
 
+ 
 app.use('/album', auth_middleWare, album_endPoints);
 
 app.use('/image', auth_middleWare, images_endPoints);
