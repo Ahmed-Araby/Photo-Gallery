@@ -28,13 +28,3 @@ Photo-Gallery app (Like google drive, but only for images)
 - [ ] connect the server to MySql data base Hosted on AWS EC2 Instance ( for 1 day )
 - [ ] Host the server IN AWS EC2 instance ( for 1 day )
 
-## To Do - front-End:
-- [ ] enable user to create album.
-- [ ] display the albums paginated.
-- [ ] enable user upload image into the server.
-- [ ] display images of a specifc album paginated. 
-- [ ] allow user to download an image.
-- [ ] allow the user to download a complete album at once.
-- [ ] save the jwt token into browser session storage.
-- [ ] HOST the Front-End in AWS for 1 day.
-- [ ] Learn CSS and Material UI then try to Make Professional UI.
