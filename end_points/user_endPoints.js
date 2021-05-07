@@ -56,40 +56,101 @@ Router.post('/signup', function(req, res){
         })
     })
     .catch((err)=>{
-        console.log("hasing password failed : ", err)
+        res.status(500).json({
+            success:false, 
+            error:"hashing server error",
+        })
     });
+
+    return ;
 })
 
+
+
 Router.post('/signin', function(req, res){
+    // validate the data 
+    try{
+        const scheme = {
+            email:{type:"email"}, 
+            password:{type:"string"}, 
+            $$strict:true
+        }
+        validator.validate(req.body, scheme); 
+    }
+    catch(err){
+        res.status(400).json({
+            success:false, 
+            error:"request data is malformed"
+        });
+        return ;
+    }
+
+    // authenticate the user
     let email = req.body.email;
     let password = req.body.password;
- 
-    /**
-     * here should be the Data retrival and 
-     * checking of the user data against the DB
-     */
-    let name ="Ahmed Araby";
-    let id="id_1";
-    let user = { id:"id_1",
-                 name:"ahmed_araby",
-                 email:"ahmedaraby605@gmail.com", 
-                 password:"sasasaslkjwijdoidj", // hashed
-                 salt:"asasasa", 
+    
+    const query = "select * from users where email= ?;";
+    const inserts = [email];
+    const preparedSqlQuery = mysql.format(query, inserts);
+    
+    mySqlPool.query(preparedSqlQuery, function(err, results, fields){
+        if(err){
+            res.status(500).json({
+                success:false, 
+                error:"server error "
+            })
+            return ;
+        }
+        else if(results.length==0){
+            console.log("here")
+            res.json({
+                success:false, 
+                error:"user is not registred"
+            })
+            return ;
+        }
 
-                 // for authorization
-                 roles:["read:image", "read:album", "write:image", "write:album"],
-                 exp:Date.now() / 1000 + 60 * 60
-                };
-    // give the user JWT token.
-    let jwt_token = generateJwtToken(user); // only valid for 1 minute.
-    res.cookie('bearer_token', jwt_token);
-    res.json({
-        success:true,
-        name:name, 
-        email:email,
-        id:id,
-        jwt_token:jwt_token
+        
+        const {id, name, password:hashedPass, email} = results[0];
+        console.log(password, hashedPass)
+        bcrypt.compare(password, hashedPass)
+        .then((result)=>{
+            if(result){
+                let user = { id:id,
+                             name:name, 
+                             email:email,  
+                             // for authorization
+                             roles:["read:image", "read:album", "write:image", "write:album"],
+                             exp:Date.now() / 1000 + 60 * 60
+                            };
+                let jwt_token = generateJwtToken(user); // only valid for 1 minute.
+                //res.cookie('bearer_token', jwt_token);
+                res.json({
+                    success:true,
+                    name:name, 
+                    email:email,
+                    id:id,
+                    jwt_token:jwt_token
+                });
+            }
+            else{
+                res.json({
+                    success:false, 
+                    error:"user email or password is wrong"
+                })
+            }
+        }) 
+        .catch((err)=>{
+            console.log("here" , err);
+            res.status(500).json({
+                success:false, 
+                error:"server error please call support"
+            });
+        })
+
+        return ;
     });
+
  })
 
 module.exports = {user_endPoints:Router};
