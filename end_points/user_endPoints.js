@@ -1,5 +1,8 @@
 const Router = require('express').Router();
 const mysql = require('mysql');
+const fastValidator = require('fastest-validator');
+const validator = new fastValidator();
+
 const generateJwtToken = require('../utils/JWT').generateJwtToken;
 
 /*
@@ -20,8 +23,33 @@ Router.post('/signup', function(req, res){
      * here we should save the user data into the Database
      * also make sure we do not have user with the same email before.
      */
-    console.log(req.body)
-    res.end("sign in up done");
+
+    // validate request data 
+    console.log("body : ", req.body);
+    try{
+        const scheme={
+            name:{type:"string", }, 
+            email:{type:"email"}, 
+            password:{type:"string", min:10, max:50},
+            $$strict:true, // no additional props are allowed.
+        }
+        validator.validate(req.body, scheme);
+    }
+    catch(err){
+        res.status(400).json({
+            success:false, 
+            error:"request data is malformed"
+        });
+        return ;
+    }
+
+    // save data into the DB
+    
+
+    res.status(201).json({
+        success:true, 
+        id:124,
+    })
 })
 
 Router.post('/signin', function(req, res){

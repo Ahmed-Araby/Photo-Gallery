@@ -39,7 +39,8 @@ app.use('/', user_endPoints);
 
 // error handling have to be the last.
 app.use(function(err, req, res, next){
-    res.json({
+    console.log("error handler middle ware ");
+    res.status(500).json({
         error:err.message,
         from:"error handler middleWare",
     });
@@ -47,6 +48,7 @@ app.use(function(err, req, res, next){
 
 /** handle 404 not found */
 app.use(function(req, res){
+    console.log("not found middle ware " );
     res.status(404).json({
         error:"not Found"
     })
