@@ -1,28 +1,13 @@
 const Router = require('express').Router();
-const mysql = require('mysql');
 const fastValidator = require('fastest-validator');
 const validator = new fastValidator();
-
+const bcrypt = require('bcrypt');
+const {mySqlPool, mysql} = require('../utils/mySqlConn');
 const generateJwtToken = require('../utils/JWT').generateJwtToken;
 
-/*
-let con = mysql.createConnection({
-    host:"localhost",
-    user:"",
-    password:"",
-    database:"gallery" 
-})
-
-con.connect((err)=>{
-    console.log("error is : ",err);
-})
-*/
+const salt_rounds = parseInt(process.env.SALT_ROUNDS, 10);
 
 Router.post('/signup', function(req, res){
-    /**
-     * here we should save the user data into the Database
-     * also make sure we do not have user with the same email before.
-     */
 
     // validate request data 
     console.log("body : ", req.body);
@@ -43,13 +28,36 @@ Router.post('/signup', function(req, res){
         return ;
     }
 
-    // save data into the DB
-    
+    const name = req.body.name;
+    const email = req.body.email;
+    const pass = req.body.password;
+    const salt = "-------";
 
-    res.status(201).json({
-        success:true, 
-        id:124,
+    // save data into the DB
+    bcrypt.hash(pass, salt_rounds)  // auto salt generation
+    .then((hash)=>{
+        const query = "insert into users (name, email, password, salt) values(?, ?, ?, ?)"
+        const inserts = [name, email, hash, salt];
+        const preparedQuery = mysql.format(query, inserts);
+        mySqlPool.query(preparedQuery, function(err, results, fields){
+            if(err){
+                res.status(500).json({
+                    success:false, 
+                    error:err.message
+                })
+            }
+            else{
+                const rowId = results.insertedId;
+                res.status(201).json({
+                    success:true, 
+                    id:rowId,
+                })
+            }
+        })
     })
+    .catch((err)=>{
+        console.log("hasing password failed : ", err)
+    });
 })
 
 Router.post('/signin', function(req, res){

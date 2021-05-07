@@ -1,0 +1,13 @@
+to study:
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400
+https://www.google.com/search?q=how+to+validate+api+data+in+node+js&oq=how+to+validate+api+data+in+node+js&aqs=chrome..69i57j33i22i29i30l9.8393j0j7&sourceid=chrome&ie=UTF-8#kpvalbx=_bICUYJSwLuGPjLsP9qKvgA019
+https://www.npmjs.com/package/fastest-validator#built-in-validators
+https://www.npmjs.com/package/mysql#pooling-connections
+https://www.digitalocean.com/community/questions/native-authentication-user-grant-access-to-a-single-database
+https://www.digitalocean.com/community/tutorials/how-to-allow-remote-access-to-mysql
+
+https://askubuntu.com/questions/82374/how-do-i-start-stop-mysql-server
+https://stackoverflow.com/questions/8096550/mysql-determine-which-database-is-selected
+https://www.techonthenet.com/mysql/tables/alter_table.php#:~:text=The%20syntax%20to%20rename%20a%20table%20in%20MySQL%20is%3A,The%20table%20to%20rename.
+https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-ubuntu-18-04
+
