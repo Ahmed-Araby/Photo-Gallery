@@ -8,6 +8,7 @@ Photo-Gallery app (Like google drive, but only for images)
 ## technologies used till now:
 * Node js
 * Express
+* MySql
 * JWT for user authentication and authorization.
 
 ## Features:
