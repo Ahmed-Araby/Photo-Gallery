@@ -24,18 +24,18 @@ Router.post('/', (req, res)=>{
     if(!req.body.new_album_name){
         res.status(400).json({
             success:false, 
-            error:"request format is wrong"
+            error:"request format is malformed"
         });
         return ;
     }
 
-    const userId = req.user.id;
+    const userId = req.user.id.toString();
     let new_album_name  = req.body.new_album_name;
     let new_album_path = path.join(storagePath, userId, new_album_name);
     if(fs.existsSync(new_album_path)){
-        res.status(500).json({
+        res.status(400).json({
             success:false, 
-            error:`user already have album with this name ${new_album_name}`
+            error:`user already have album with this name :${new_album_name}`
         });
         return ;
     }
@@ -45,9 +45,10 @@ Router.post('/', (req, res)=>{
 
     fs.mkdir(new_album_path, function(err){
         if(err){
+            console.log("mkdir error : ", err);
             res.status(500).json({
                 success:false, 
-                error:"can not create album with this name"
+                error:"server error, un able to create album with this name"
             });
         }
         else{
@@ -57,39 +58,24 @@ Router.post('/', (req, res)=>{
             });
         }
     })
-
 })
-
-
 
 /** 
  * return albums for the user paginated 
 */
 Router.get('/:pageNum/:albumsPerPage', (req, res)=>{
 
-    console.log("return albums end point ")
-
-    // extract data from the request
-    const userId = req.user.id;
+    console.log("get paginated albums end point ")
+    
+    const userId = req.user.id.toString();
     let pageNum=0;
     let albumsPerPage = 0;    
     pageNum = parseInt(req.params.pageNum, 10);
     albumsPerPage = parseInt(req.params.albumsPerPage, 10);
-    
-    // validate the data 
-    /*if(!pageNum  || !albumsPerPage ){
-        console.log("malformed url parameters")
-        res.status(401).json({
-            success:false, 
-            error:"url parameters are mulformed"
-        })
-        return ;
-    }*/
 
     // get albums
     let dirPath = path.join(storagePath, userId);
     fs.readdir(dirPath, function(err, contentList){
-        // do pagination here.
         if(err)
             res.status(404).json({
                 success:false, 

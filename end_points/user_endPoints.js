@@ -1,3 +1,5 @@
+const fs = require('fs');
+const path = require('path');
 const Router = require('express').Router();
 const fastValidator = require('fastest-validator');
 const validator = new fastValidator();
@@ -6,6 +8,7 @@ const {mySqlPool, mysql} = require('../utils/mySqlConn');
 const generateJwtToken = require('../utils/JWT').generateJwtToken;
 
 const salt_rounds = parseInt(process.env.SALT_ROUNDS, 10);
+const storagePath = path.join(__dirname, "/../storage");
 
 Router.post('/signup', function(req, res){
 
@@ -47,11 +50,21 @@ Router.post('/signup', function(req, res){
                 })
             }
             else{
-                const rowId = results.insertedId;
-                res.status(201).json({
-                    success:true, 
-                    id:rowId,
-                })
+                const userId = results.insertId.toString();
+                const userDir = path.join(storagePath, userId);
+                fs.mkdir(userDir, function(err){
+                    if(err){
+                        res.status(500).json({
+                            success:false,
+                            error:"server error"
+                        });
+                        return ;
+                    }
+                    res.status(201).json({
+                        success:true, 
+                        id:userId,
+                    })
+                });
             }
         })
     })
@@ -141,7 +154,7 @@ Router.post('/signin', function(req, res){
             }
         }) 
         .catch((err)=>{
-            console.log("here" , err);
+            console.log("sign in server error " , err);
             res.status(500).json({
                 success:false, 
                 error:"server error please call support"
