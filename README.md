@@ -23,8 +23,8 @@ Photo-Gallery app (Like google drive, but only for images)
 - [X] Authentication and Authorization Middle Wares.
 - [X] Album CRUD EndPoints.
 - [X] Images Crud EndPoints.  
-- [ ] Build Data Base to store user information.
-- [ ] change the storage from teh server file System to Object store (local object store data base | AWS S3 | ...) [for learning purpose].
+- [X] Build MySql Data Base to store user information.
+- [ ] change the storage from the server file System to Object store (local object store data base | AWS S3 | ...) [for learning purpose].
 - [ ] connect the server to MySql data base Hosted on AWS EC2 Instance ( for 1 day )
 - [ ] Host the server IN AWS EC2 instance ( for 1 day )
 
